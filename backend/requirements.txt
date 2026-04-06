@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+python-multipart
+python-dotenv
+pydantic
+pymupdf
+python-docx
+pillow
+opencv-python
+numpy
+paddlepaddle
+paddleocr
+google-generativeai
+chromadb
+sentence-transformers
