@@ -14,5 +14,5 @@ ALLOWED_EXTENSIONS = os.getenv(
     "ALLOWED_EXTENSIONS",
     ".pdf,.png,.jpg,.jpeg,.docx,.webp"
 ).split(",")
-DEFAULT_MODEL      = os.getenv("DEFAULT_MODEL", "gemini-2.5-flash")
+DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "gemini-1.5-flash")
 STORAGE_PATH       = os.getenv("STORAGE_PATH", "./storage")
