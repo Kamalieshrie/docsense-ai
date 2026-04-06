@@ -1,38 +1,31 @@
 # ============================================================
-# gemini.py — Updated to use new google.genai package
+# gemini.py — Stable SDK for cloud deployment
 # ============================================================
 import json
-import base64
 import io
 from typing import Dict, Any, List
 from PIL import Image
-from google import genai
-from google.genai import types
+import google.generativeai as genai
 
 from app.config      import GEMINI_API_KEY, DEFAULT_MODEL
 from app.llm.prompts import PROMPTS, CLASSIFY_PROMPT
 
-_client = genai.Client(api_key=GEMINI_API_KEY)
+genai.configure(api_key=GEMINI_API_KEY)
+_model = genai.GenerativeModel(DEFAULT_MODEL)
 
 
 def _image_to_part(pil_image: Image.Image):
     buf = io.BytesIO()
     pil_image.save(buf, format="PNG")
     buf.seek(0)
-    return types.Part.from_bytes(
-        data=buf.read(),
-        mime_type="image/png"
-    )
+    return {"mime_type": "image/png", "data": buf.read()}
 
 
 def classify_document(pil_image: Image.Image) -> str:
     """Step 1 — What type of document is this?"""
     try:
         img_part = _image_to_part(pil_image)
-        response = _client.models.generate_content(
-            model=DEFAULT_MODEL,
-            contents=[img_part, CLASSIFY_PROMPT]
-        )
+        response = _model.generate_content([img_part, CLASSIFY_PROMPT])
         doc_type = response.text.strip().lower().replace(" ", "_")
         return doc_type if doc_type in PROMPTS else "unknown"
     except Exception as e:
@@ -62,10 +55,7 @@ def classify_and_extract(
     for attempt in range(3):
         try:
             img_part = _image_to_part(image)
-            response = _client.models.generate_content(
-                model=DEFAULT_MODEL,
-                contents=[img_part, prompt]
-            )
+            response = _model.generate_content([img_part, prompt])
             text = response.text.strip()
 
             # Strip markdown fences if present
