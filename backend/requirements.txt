@@ -9,6 +9,6 @@ pillow
 opencv-python
 numpy
 easyocr
-google-generativeai
+google-genai
 chromadb
 sentence-transformers
