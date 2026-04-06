@@ -9,7 +9,7 @@ export default function Library({ refresh }) {
 
   const fetchDocs = () => {
     setLoading(true)
-    fetch('http://localhost:8000/api/documents')
+    fetch('https://docsense-ai-drr7.onrender.com/api/documents')
       .then(r => r.json())
       .then(d => { setDocs(d.documents || []); setLoading(false) })
       .catch(() => setLoading(false))
@@ -20,7 +20,7 @@ export default function Library({ refresh }) {
   const handleDelete = async (docId, e) => {
     e.stopPropagation()
     if (!confirm('Delete this document permanently?')) return
-    await fetch(`http://localhost:8000/api/documents/${docId}`,
+    await fetch(`https://docsense-ai-drr7.onrender.com/api/documents/${docId}`,
       { method: 'DELETE' })
     if (selected?.id === docId) setSelected(null)
     fetchDocs()

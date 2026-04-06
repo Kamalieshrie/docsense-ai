@@ -11,7 +11,7 @@ export default function SearchBar() {
     setLoading(true)
     try {
       const res  = await fetch(
-        `http://localhost:8000/api/search?q=${encodeURIComponent(query)}`
+        `https://docsense-ai-drr7.onrender.com/api/search?q=${encodeURIComponent(query)}`
       )
       const data = await res.json()
       setResults(data.results || [])
